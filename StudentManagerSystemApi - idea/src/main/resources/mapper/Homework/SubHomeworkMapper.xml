@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cow.horse.dao.Homework.SubHomeworkMapper" >
+    <resultMap id="BaseUserMap" type="com.cow.horse.dto.SubHomework" >
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="homeworkid" property="homeworkid" jdbcType="VARCHAR" />
+        <result column="userid" property="userid" jdbcType="VARCHAR" />
+        <result column="username" property="username" jdbcType="VARCHAR" />
+        <result column="attaurl" property="attaurl" jdbcType="VARCHAR" />
+        <result column="attaname" property="attaname" jdbcType="VARCHAR" />
+        <result column="addtime" property="addtime" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="addSubHomework" parameterType="com.cow.horse.dto.SubHomework">
+        INSERT INTO subHomework
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
+            <if test="homeworkid != null and homeworkid != ''">`homeworkid`,</if>
+            <if test="userid != null and userid != ''">`userid`,</if>
+            <if test="username != null and username != ''">`username`,</if>
+            <if test="attaurl != null and attaurl != ''">`attaurl`,</if>
+            <if test="attaname != null and attaname != ''">`attaname`,</if>
+            <if test="addtime != null and addtime != ''">`addtime`,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
+            <if test="homeworkid != null and homeworkid != ''">#{homeworkid},</if>
+            <if test="userid != null and userid != ''">#{userid},</if>
+            <if test="username != null and username != ''">#{username},</if>
+            <if test="attaurl != null and attaurl != ''">#{attaurl},</if>
+            <if test="attaname != null and attaname != ''">#{attaname},</if>
+            <if test="addtime != null and addtime != ''">#{addtime},</if>
+        </trim>
+    </insert>
+
+    <delete id="delete" parameterType="map">
+        DELETE FROM
+        subHomework
+        <where>
+            id IN
+            <foreach collection="ids" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+    </delete>
+
+    <update id="update" parameterType="com.cow.horse.dto.User">
+        UPDATE subHomework
+        <trim prefix="set" suffixOverrides=",">
+            <if test="homeworkid != null and homeworkid != ''">
+                `homeworkid` = #{homeworkid},
+            </if>
+            <if test="userid != null and userid != ''">
+                userid = #{userid},
+            </if>
+            <if test="username != null and username != ''">
+                `username`= #{username},
+            </if>
+            <if test="attaurl != null and attaurl != ''">
+                `attaurl`= #{attaurl},
+            </if>
+            <if test="attaname != null and attaname != ''">
+                `attaname` = #{attaname},
+            </if>
+            <if test="addtime != null and addtime != ''">
+                addtime = #{addtime},
+            </if>
+        </trim>
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+        </where>
+    </update>
+
+    <select id="getSubHomeworkList" parameterType="map" resultMap="BaseUserMap">
+        SELECT * FROM subHomework
+        <where>
+            <if test="condition.code != null and condition.code != ''">
+                and name LIKE CONCAT('%',#{condition.code},'%')
+            </if>
+            <if test="condition.homeworkid != null and condition.homeworkid != ''">
+                and homeworkid = #{condition.homeworkid}
+            </if>
+            <if test="condition.userid != null and condition.userid != ''">
+                and userid = #{condition.userid}
+            </if>
+        </where>
+        ORDER BY addtime
+    </select>
+
+</mapper>
+

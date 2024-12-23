@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cow.horse.dao.Course.CoursewareMapper" >
+    <resultMap id="BaseUserMap" type="com.cow.horse.dto.Homework" >
+        <result column="id" property="id" jdbcType="VARCHAR" />
+        <result column="course_id" property="courseId" jdbcType="VARCHAR" />
+        <result column="name" property="name" jdbcType="VARCHAR" />
+        <result column="desc" property="desc" jdbcType="VARCHAR" />
+        <result column="attachmenturl" property="attachmenturl" jdbcType="VARCHAR" />
+        <result column="attachmentname" property="attachmentname" jdbcType="VARCHAR" />
+        <result column="addtime" property="addtime" jdbcType="VARCHAR" />
+        <result column="createid" property="createid" jdbcType="VARCHAR" />
+        <result column="creater" property="creater" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <insert id="addHomework" parameterType="com.cow.horse.dto.Homework">
+        INSERT INTO courseware
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">id,</if>
+            <if test="courseId != null and courseId != ''">`course_id`,</if>
+            <if test="name != null and name != ''">`name`,</if>
+            <if test="desc != null and desc != ''">`desc`,</if>
+            <if test="attachmenturl != null and attachmenturl != ''">`attachmenturl`,</if>
+            <if test="attachmentname != null and attachmentname != ''">`attachmentname`,</if>
+            <if test="addtime != null and addtime != ''">`addtime`,</if>
+            <if test="createid != null and createid != ''">`createid`,</if>
+            <if test="creater != null and creater != ''">`creater`,</if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null and id != ''">#{id},</if>
+            <if test="courseId != null and courseId != ''">#{courseId},</if>
+            <if test="name != null and name != ''">#{name},</if>
+            <if test="desc != null and desc != ''">#{desc},</if>
+            <if test="attachmenturl != null and attachmenturl != ''">#{attachmenturl},</if>
+            <if test="attachmentname != null and attachmentname != ''">#{attachmentname},</if>
+            <if test="addtime != null and addtime != ''">#{addtime},</if>
+            <if test="createid != null and createid != ''">#{createid},</if>
+            <if test="creater != null and creater != ''">#{creater},</if>
+        </trim>
+    </insert>
+
+    <delete id="delete" parameterType="map">
+        DELETE FROM
+        courseware
+        <where>
+            id IN
+            <foreach collection="ids" item="id" open="(" separator="," close=")">
+                #{id}
+            </foreach>
+        </where>
+    </delete>
+
+    <update id="update" parameterType="com.cow.horse.dto.User">
+        UPDATE courseware
+        <trim prefix="set" suffixOverrides=",">
+            <if test="name != null and name != ''">
+                `name` = #{name},
+            </if>
+            <if test="courseId != null and courseId != ''">
+                `course_id` = #{courseId},
+            </if>
+            <if test="name != null and name != ''">
+                name = #{name},
+            </if>
+            <if test="desc != null and desc != ''">
+                desc = #{desc},
+            </if>
+            <if test="attachmenturl != null and attachmenturl != ''">
+                `attachmenturl`= #{attachmenturl},
+            </if>
+            <if test="attachmentname != null and attachmentname != ''">
+                `attachmentname`= #{attachmentname},
+            </if>
+            <if test="addtime != null and addtime != ''">
+                `addtime` = #{addtime},
+            </if>
+            <if test="createid != null and createid != ''">
+                createid = #{createid},
+            </if>
+            <if test="creater != null and creater != ''">
+                creater = #{creater},
+            </if>
+        </trim>
+        <where>
+            <if test="id != null and id != ''">
+                id = #{id}
+            </if>
+        </where>
+    </update>
+
+    <select id="getHomeworkList" parameterType="map" resultMap="BaseUserMap">
+        SELECT * FROM courseware
+        <where>
+            <if test="condition.code != null and condition.code != ''">
+                name LIKE CONCAT('%',#{condition.code},'%')
+            </if>
+        </where>
+        ORDER BY addtime desc
+    </select>
+    <select id="checkCodeCount" resultType="string">
+        select MAX(id) from courseware
+        <where>
+            <if test="condition.profession != null and condition.profession != ''">
+                and profession = #{condition.profession}
+            </if>
+            <if test="condition.year != null and condition.year != ''">
+                AND year  = #{condition.year}
+            </if>
+        </where>
+    </select>
+    <select id="getHomeworkByMap" resultMap="BaseUserMap" parameterType="map">
+        SELECT
+        a.*,
+        c.real_name,
+        d.start,
+        d.end,
+        d.room
+        FROM course a
+        left join teacher_course b
+        on a.id = b.course_id
+        left join teacher c
+        on b.teacher_id = c.id
+        left join course_info d
+        on a.id = d.course_id
+        <where>
+            <if test="condition.profession != null and condition.profession != ''">
+                a.profession = #{condition.profession}
+            </if>
+            <if test="condition.term != null and condition.term != ''">
+                AND a.term  = #{condition.term}
+            </if>
+            <if test="condition.courseName != null and condition.courseName != ''">
+                AND a.name  = #{condition.courseName}
+            </if>
+        </where>
+    </select>
+    <select id="getHomeworkById" resultMap="BaseUserMap" parameterType="string">
+        SELECT
+        *
+        FROM courseware
+        <where>
+            id = #{courseId}
+        </where>
+    </select>
+</mapper>
+
