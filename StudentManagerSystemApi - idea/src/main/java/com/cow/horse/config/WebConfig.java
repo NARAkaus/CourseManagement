@@ -6,6 +6,8 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.HandlerInterceptor;
 import org.springframework.web.servlet.config.annotation.*;
 
+
+
 /**
  * Description 解决vue+spring boot跨域问题
  * Author: cow.horse

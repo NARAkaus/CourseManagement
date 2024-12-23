@@ -21,6 +21,7 @@
     ></VmBaseTable>
     <VmHomework ref="homework" @search="search"></VmHomework>
 
+
     <el-dialog v-dialogDrag :title="title" :visible.sync="dialog" :close-on-click-modal=false append-to-body width="800px">
       <el-form ref="form" :model="form" label-width="90px" >
         <el-row>
