@@ -69,6 +69,7 @@
   </div>
 </template>
 
+
 <script>
   import VmBaseTable from '../../base/base-table'
   export default {
