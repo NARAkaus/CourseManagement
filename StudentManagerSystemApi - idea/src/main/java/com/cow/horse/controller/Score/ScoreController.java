@@ -24,6 +24,7 @@ import java.util.Map;
 @RequestMapping("/api/sms/score")
 public class ScoreController {
 
+
     @Autowired
     private ScoreService scoreService;
 
